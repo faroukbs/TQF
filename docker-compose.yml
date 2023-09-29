@@ -1,0 +1,26 @@
+version: '3'
+
+services:
+
+  db:
+    image: mysql:5.7
+    volumes:
+      - db_data:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=commerces
+
+  app:
+    image: faroukboussaid/test:v1.0.1
+    ports: 
+      - "8000:8000"
+    depends_on:
+      - db
+    environment:
+      - DB_HOST=db
+      - DB_USER=root
+      - DB_PASSWORD=root
+      - DB_NAME=commerces
+
+volumes:
+  db_data: {}
