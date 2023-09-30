@@ -23,7 +23,7 @@ services:
   app:
     image: faroukboussaid/tqf:v1
     build:
-      context: C:\Users\bouss\OneDrive\Bureau\Quanticfy\Test\
+      context: ./Dockerfile
     ports: 
       - "8000:8000"
     depends_on:
