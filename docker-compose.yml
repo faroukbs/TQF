@@ -1,26 +1,53 @@
 version: '3'
 
+networks:
+  mynetwork:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.18.0.0/16
+          gateway: 172.18.0.1
+
 services:
 
   db:
     image: mysql:5.7
+    networks:
+      - mynetwork
     volumes:
       - db_data:/var/lib/mysql
     environment:
-      - MYSQL_ROOT_PASSWORD=root
-      - MYSQL_DATABASE=commerces
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: commerces
 
   app:
-    image: faroukboussaid/test:v1.0.1
+    image: faroukboussaid/tqf:v1
+    build:
+      context: C:\Users\bouss\OneDrive\Bureau\Quanticfy\Test\
     ports: 
       - "8000:8000"
     depends_on:
       - db
+    networks:
+      - mynetwork
     environment:
-      - DB_HOST=db
-      - DB_USER=root
-      - DB_PASSWORD=root
-      - DB_NAME=commerces
+      MYSQL_HOST: db
+      MYSQL_USER: root
+      MYSQL_PASSWORD: root
+      MYSQL_DATABASE: commerces
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    ports:
+      - "8080:80"
+    depends_on:
+      - db
+    networks:
+      - mynetwork
+    environment:
+      PMA_HOST: db
+      PMA_USER: root
+      PMA_PASSWORD: root
 
 volumes:
   db_data: {}

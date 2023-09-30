@@ -2,15 +2,10 @@ FROM python:3.8-slim
 
 WORKDIR /app
 
-ENV DB_USER=myuser
-ENV DB_PASSWORD=mypassword  
-ENV DB_HOST=mysql
-ENV DB_NAME=mydatabase
+COPY install.txt .
 
-EXPOSE 8000
-
-RUN pip install pandas sqlalchemy requests 
+RUN pip install -r install.txt
 
 COPY . .
 
-ENTRYPOINT python test.py
+CMD ["python", "test.py"]
