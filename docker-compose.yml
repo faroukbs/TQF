@@ -15,6 +15,7 @@ services:
       - db_data:/var/lib/mysql
     environment:
       MYSQL_DATABASE: commerces
+      MYSQL_ROOT_PASSWORD: root 
 
   app:
     image: faroukboussaid/tqf:v2
