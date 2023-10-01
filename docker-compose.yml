@@ -3,10 +3,7 @@ version: '3'
 networks:
   mynetwork:
     driver: bridge
-    ipam:
-      config:
-        - subnet: 10.100.0.0/16
-          gateway: 10.100.0.1
+
 
 services:
 
@@ -17,13 +14,10 @@ services:
     volumes:
       - db_data:/var/lib/mysql
     environment:
-      MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: commerces
 
   app:
-    image: faroukboussaid/tqf:v1
-    build:
-      context: ./Dockerfile
+    image: faroukboussaid/tqf:v2
     ports: 
       - "8000:8000"
     depends_on:
