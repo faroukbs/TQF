@@ -206,7 +206,6 @@ def load(df: pd.DataFrame) -> None:
         create_nom_du_commerce_table()
         create_code_postal_table()
 
-        df.to_sql('commerces', engine, if_exists="replace", index=False)
         # Insert the dataframe into MySQL
         #df.to_sql(db_name, engine, if_exists="replace", index=False)
           # Insert the 'nom_du_commerce' data into the 'nom_du_commerce' table
@@ -223,7 +222,8 @@ def load(df: pd.DataFrame) -> None:
         # Remove the 'nom_du_commerce' column from the main dataframe
         df.drop(columns=['code_postal'], inplace=True)
         # Insert the remaining data into the 'commerces' table
-        
+        df.to_sql('commerces', engine, if_exists="replace", index=False)
+
     except Exception as e:
         print("Data can't be loaded:", e)
 
@@ -282,4 +282,4 @@ if __name__ == "__main__":
         df[col] = df[col].apply(clean_text)
 
     load(df)
-#    generate_type_of_commerce_chart()
+    generate_type_of_commerce_chart()
