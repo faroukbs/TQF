@@ -1,0 +1,52 @@
+version: '3'
+
+networks:
+  mynetwork:
+    driver: bridge
+
+
+services:
+
+  mysql:
+    image: mysql:5.7
+    networks:
+      - mynetwork
+    volumes:
+      - db_data:/var/lib/mysql
+    environment:
+      MYSQL_DATABASE: commerces
+      MYSQL_ROOT_PASSWORD: yourpassword 
+
+
+  app:
+    #image: faroukboussaid/tqf:v2
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    ports: 
+      - "8000:8000"
+    depends_on:
+      - mysql
+    networks:
+      - mynetwork
+    environment:
+      DB_HOST: mysql 
+      DB_USER: root
+      DB_PASSWORD: yourpassword
+      DB_NAME: commerces
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    ports:
+      - "8080:80"
+    depends_on:
+      - mysql
+    networks:
+      - mynetwork
+    environment:
+      PMA_HOST: mysql
+      PMA_USER: root
+      PMA_PASSWORD: yourpassword
+
+volumes:
+  db_data: {}
